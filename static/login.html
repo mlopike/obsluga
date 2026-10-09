@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход и регистрация — Obsluga</title>
+<meta name="description" content="Вход в Obsluga или регистрация нового сотрудника для подачи заявок на ремонт оборудования.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к основному содержимому</a>
+
+<div class="auth-shell">
+
+  <section class="auth-visual" aria-hidden="true">
+    <a class="logo" href="index.html">
+      <span class="logo-mark"></span>
+      Obsluga
+    </a>
+    <div class="blob blob-a" style="width:70%; height:70%; top:10%; left:-10%;"></div>
+    <div class="blob blob-b" style="width:50%; height:50%; bottom:-8%; right:-10%;"></div>
+    <div class="auth-visual-copy">
+      <h2 style="color:#fff;">Заявки на ремонт — в одном окне</h2>
+      <p>Войдите, чтобы создать заявку на устранение неисправности или открыть панель инженера и взять заявку в работу.</p>
+    </div>
+  </section>
+
+  <main id="main" class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-tabs" role="tablist" aria-label="Вход или регистрация">
+        <button type="button" role="tab" id="tab-login" aria-controls="panel-login" aria-selected="true">Вход</button>
+        <button type="button" role="tab" id="tab-register" aria-controls="panel-register" aria-selected="false">Регистрация</button>
+      </div>
+
+      <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
+
+      <!-- ============ LOGIN ============ -->
+      <section role="tabpanel" id="panel-login" aria-labelledby="tab-login">
+        <h1 style="font-size:1.5rem;">С возвращением</h1>
+        <p style="color:var(--text-muted); margin-bottom:22px;">Войдите, чтобы создать заявку или продолжить работу с открытыми.</p>
+
+        <!-- TODO(backend): POST /api/auth/login { email, password } — заменить submit-обработчик на реальный вызов API -->
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="login-email">Рабочий email</label>
+            <input class="input" type="email" id="login-email" name="email"
+                   autocomplete="username" required placeholder="name@company.ru">
+          </div>
+          <div class="field">
+            <label for="login-password">Пароль</label>
+            <div class="password-field">
+              <input class="input" type="password" id="login-password" name="password"
+                     autocomplete="current-password" required minlength="8" placeholder="Введите пароль">
+              <button type="button" class="password-toggle" data-toggle-for="login-password"
+                      aria-pressed="false" aria-label="Показать пароль">
+                <span aria-hidden="true">👁</span>
+              </button>
+            </div>
+          </div>
+          <div class="field" style="display:flex; align-items:center; justify-content:space-between;">
+            <div class="checkbox-field">
+              <input type="checkbox" id="login-remember" name="remember">
+              <label for="login-remember">Запомнить меня</label>
+            </div>
+            <a href="#" style="font-size:.85rem;">Забыли пароль?</a>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Войти</button>
+        </form>
+        <p class="auth-foot-link">Ещё нет аккаунта? <a href="#" data-switch-to="register">Создать заявку впервые</a></p>
+      </section>
+
+      <!-- ============ REGISTER ============ -->
+      <section role="tabpanel" id="panel-register" aria-labelledby="tab-register" hidden>
+        <h1 style="font-size:1.5rem;">Регистрация сотрудника</h1>
+        <p style="color:var(--text-muted); margin-bottom:22px;">Понадобится рабочая почта и подразделение — это поможет быстрее находить нужное оборудование.</p>
+
+        <!-- TODO(backend): POST /api/auth/register { fullName, email, department, role, password } -->
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <label for="reg-name">ФИО</label>
+            <input class="input" type="text" id="reg-name" name="fullName"
+                   autocomplete="name" required placeholder="Иванов Иван Иванович">
+          </div>
+          <div class="field">
+            <label for="reg-email">Рабочий email</label>
+            <input class="input" type="email" id="reg-email" name="email"
+                   autocomplete="email" required placeholder="name@company.ru">
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="reg-department">Цех / отдел</label>
+              <input class="input" type="text" id="reg-department" name="department"
+                     autocomplete="off" required placeholder="Цех №2">
+            </div>
+            <div class="field">
+              <label for="reg-role">Роль</label>
+              <select class="input" id="reg-role" name="role" required>
+                <option value="" disabled selected>Выберите роль</option>
+                <option value="employee">Сотрудник</option>
+                <option value="engineer">Инженер</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="reg-password">Пароль</label>
+            <div class="password-field">
+              <input class="input" type="password" id="reg-password" name="password"
+                     autocomplete="new-password" required minlength="8" placeholder="Не менее 8 символов">
+              <button type="button" class="password-toggle" data-toggle-for="reg-password"
+                      aria-pressed="false" aria-label="Показать пароль">
+                <span aria-hidden="true">👁</span>
+              </button>
+            </div>
+            <span class="hint">Минимум 8 символов, хотя бы одна цифра.</span>
+          </div>
+          <div class="field">
+            <label for="reg-password-confirm">Подтверждение пароля</label>
+            <input class="input" type="password" id="reg-password-confirm" name="passwordConfirm"
+                   autocomplete="new-password" required minlength="8" placeholder="Повторите пароль">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Создать аккаунт</button>
+        </form>
+        <p class="auth-foot-link">Уже есть аккаунт? <a href="#" data-switch-to="login">Войти</a></p>
+      </section>
+    </div>
+  </main>
+
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

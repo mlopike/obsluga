@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Заявки — панель инженера · Obsluga</title>
+<meta name="description" content="Панель инженера Obsluga: очередь заявок на ремонт оборудования, фильтры по статусу и форма фиксации диагностики.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к основному содержимому</a>
+
+<div class="admin-shell">
+
+  <aside class="admin-sidebar">
+    <a class="logo" href="index.html">
+      <span class="logo-mark" aria-hidden="true"></span>
+      Obsluga
+    </a>
+    <nav aria-label="Разделы панели">
+      <ul class="admin-nav">
+        <li><a href="admin.html" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
+          Заявки
+        </a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Оборудование
+        </a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3-6 7-6s7 2.7 7 6"/><path d="M16 5.5a3 3 0 1 1 3.4 4.8"/><path d="M17 14c2.8.5 5 2.6 5 6"/></svg>
+          Инженеры
+        </a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 19h16M7 19V9M12 19V5M17 19v-7"/></svg>
+          Отчёты
+        </a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+          Настройки
+        </a></li>
+      </ul>
+    </nav>
+    <div class="admin-user">
+      <div class="admin-user-avatar" aria-hidden="true"></div>
+      <div class="admin-user-meta">
+        <strong>Мария Кузнецова</strong>
+        <span>Инженер · цех №2</span>
+      </div>
+      <a href="login.html">Выйти</a>
+    </div>
+  </aside>
+
+  <main id="main" class="admin-main">
+    <div class="admin-topbar">
+      <h1>Заявки</h1>
+      <div class="admin-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="ticketSearch" class="visually-hidden">Поиск по заявкам</label>
+        <input class="input" type="search" id="ticketSearch" placeholder="Поиск по оборудованию или номеру">
+      </div>
+      <button type="button" class="btn btn-primary" id="openCreateDialog">+ Новая заявка</button>
+    </div>
+
+    <div class="filter-tabs" role="group" aria-label="Фильтр заявок по статусу">
+      <button type="button" data-filter="all" aria-pressed="true">Все</button>
+      <button type="button" data-filter="new" aria-pressed="false">Новые</button>
+      <button type="button" data-filter="progress" aria-pressed="false">В работе</button>
+      <button type="button" data-filter="closed" aria-pressed="false">Закрытые</button>
+    </div>
+
+    <div class="ticket-table-wrap">
+      <table class="ticket-table">
+        <caption>Очередь заявок на ремонт оборудования. Данные ниже — тестовый набор; после подключения бэкенда таблица будет заполняться из GET /api/tickets (см. js/admin.js).</caption>
+        <thead>
+          <tr>
+            <th scope="col">№</th>
+            <th scope="col">Оборудование</th>
+            <th scope="col">Неисправность</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Инженер</th>
+            <th scope="col">Обновлено</th>
+            <th scope="col"><span class="visually-hidden">Действия</span></th>
+          </tr>
+        </thead>
+        <tbody id="ticketTableBody">
+          <!-- rows are rendered by js/admin.js from MOCK_TICKETS -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- ======= Create ticket dialog ======= -->
+<dialog id="createDialog" aria-labelledby="createDialogTitle">
+  <div class="dialog-head">
+    <h2 id="createDialogTitle">Новая заявка</h2>
+    <button type="button" class="dialog-close" data-close-dialog="createDialog" aria-label="Закрыть окно">✕</button>
+  </div>
+  <!-- TODO(backend): POST /api/tickets { equipmentId, description, reportedBy } -->
+  <form id="createTicketForm">
+    <div class="dialog-body">
+      <div class="field">
+        <label for="create-equipment">Оборудование</label>
+        <select class="input" id="create-equipment" name="equipment" required>
+          <option value="" disabled selected>Выберите оборудование из каталога</option>
+          <!-- TODO(backend): options should come from GET /api/equipment -->
+          <option>Токарный станок 16К20</option>
+          <option>Компрессор ВК-25</option>
+          <option>Конвейерная лента №3</option>
+          <option>Сварочный аппарат ТДМ-317</option>
+          <option>Насос ЦНС 60-99</option>
+          <option>Пресс гидравлический ПГ-100</option>
+          <option>Электропогрузчик EP-16</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="create-description">Описание неисправности</label>
+        <textarea class="input" id="create-description" name="description" required
+                  placeholder="Что произошло, когда и при каких обстоятельствах"></textarea>
+      </div>
+      <div class="field">
+        <label for="create-reporter">Сотрудник, подавший заявку</label>
+        <input class="input" type="text" id="create-reporter" name="reporter" required
+               autocomplete="name" placeholder="ФИО сотрудника">
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button type="button" class="btn btn-ghost" data-close-dialog="createDialog">Отмена</button>
+      <button type="submit" class="btn btn-primary">Создать заявку</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ======= Ticket detail / diagnostics dialog ======= -->
+<dialog id="detailDialog" aria-labelledby="detailDialogTitle">
+  <div class="dialog-head">
+    <h2 id="detailDialogTitle">Заявка</h2>
+    <button type="button" class="dialog-close" data-close-dialog="detailDialog" aria-label="Закрыть окно">✕</button>
+  </div>
+  <!-- TODO(backend): PATCH /api/tickets/:id { status, diagnosis, workDone } -->
+  <form id="detailForm">
+    <div class="dialog-body">
+      <div class="ticket-meta" id="detailMeta"></div>
+      <div class="field">
+        <label for="detail-status">Статус</label>
+        <select class="input" id="detail-status" name="status" required>
+          <option value="" disabled>Выберите статус</option>
+          <option value="new">Новая</option>
+          <option value="progress">В работе</option>
+          <option value="closed">Закрыта</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="detail-diagnosis">Диагноз</label>
+        <textarea class="input" id="detail-diagnosis" name="diagnosis"
+                  placeholder="Причина неисправности, найденная инженером"></textarea>
+      </div>
+      <div class="field">
+        <label for="detail-work">Выполненные работы</label>
+        <textarea class="input" id="detail-work" name="workDone"
+                  placeholder="Что было сделано для устранения неисправности"></textarea>
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button type="button" class="btn btn-ghost" data-close-dialog="detailDialog">Отмена</button>
+      <button type="submit" class="btn btn-primary">Сохранить результат</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

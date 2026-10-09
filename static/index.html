@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obsluga — заявки на ремонт оборудования</title>
+<meta name="description" content="Obsluga — сервис регистрации заявок на устранение неисправностей оборудования: от заявки сотрудника до закрытия ремонта инженером.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к основному содержимому</a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="index.html">
+      <span class="logo-mark" aria-hidden="true"></span>
+      Obsluga
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <ul>
+        <li><a href="#process">Как это работает</a></li>
+        <li><a href="#features">Возможности</a></li>
+        <li><a href="admin.html">Панель инженера</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-ghost btn-sm" href="login.html">Войти</a>
+      <a class="btn btn-primary btn-sm" href="login.html#register">Создать заявку</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-copy">
+        <h1>От поломки до акта ремонта — в одном окне</h1>
+        <p class="lede">Obsluga собирает заявки на ремонт оборудования, передаёт их инженерам и хранит историю обслуживания каждой единицы техники — без потерянных писем и звонков по цехам.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="login.html#register">Создать заявку</a>
+          <a class="btn btn-ghost" href="admin.html">Посмотреть панель инженера</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="blob blob-a"></div>
+        <div class="blob blob-b"></div>
+        <div class="blob blob-c"></div>
+        <div class="hero-visual-label">
+          <strong>Заявка №1248</strong>
+          Компрессор ВК-25 · статус «В работе»
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="container">
+      <h2>Путь одной заявки</h2>
+      <p style="color:var(--text-muted); max-width:56ch; margin-bottom:28px;">Каждая заявка проходит один и тот же понятный маршрут — от описания неисправности сотрудником до закрытия ремонта инженером.</p>
+      <ol class="process-grid" style="list-style:none; padding:0; margin:0;">
+        <li class="process-step">
+          <span class="step-index">Шаг 1</span>
+          <h3>Выбор оборудования</h3>
+          <p>Сотрудник находит нужную единицу техники в каталоге и описывает, что случилось.</p>
+        </li>
+        <li class="process-step">
+          <span class="step-index">Шаг 2</span>
+          <h3>Регистрация заявки</h3>
+          <p>Заявка получает номер и статус «Новая», инженеры видят её в общей очереди.</p>
+        </li>
+        <li class="process-step">
+          <span class="step-index">Шаг 3</span>
+          <h3>Диагностика и ремонт</h3>
+          <p>Инженер берёт заявку в работу, фиксирует диагноз и выполненные действия.</p>
+        </li>
+        <li class="process-step">
+          <span class="step-index">Шаг 4</span>
+          <h3>Закрытие заявки</h3>
+          <p>Результат ремонта сохраняется в истории оборудования, заявка закрывается.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Что умеет Obsluga</h2>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+          </div>
+          <h3>Быстрая подача заявки</h3>
+          <p>Форма с обязательными полями и выбором оборудования из каталога — без лишних шагов и звонков диспетчеру.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3>Статус в реальном времени</h3>
+          <p>Сотрудник видит, взял ли инженер заявку в работу и на каком этапе находится ремонт.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5"/></svg>
+          </div>
+          <h3>История по оборудованию</h3>
+          <p>Все прошлые поломки и ремонты сохраняются в карточке техники — видно, что чинили и когда.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M14 3h7v7"/><path d="M10 14 21 3"/></svg>
+          </div>
+          <h3>Панель инженера</h3>
+          <p>Очередь заявок с фильтром по статусу, поиск и форма для фиксации диагностики и результата ремонта.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="status-demo-wrap">
+    <div class="container">
+      <div class="status-demo">
+        <div>
+          <h2>Заявка меняет статус — вы это видите</h2>
+          <p>Нажимайте на этапы, чтобы посмотреть, как выглядит одна и та же заявка на разных стадиях ремонта.</p>
+        </div>
+        <div class="demo-ticket">
+          <div class="demo-ticket-head">
+            <div>
+              <strong style="display:block; color:#fff;">Заявка №1248</strong>
+              <span>Компрессор ВК-25 · цех №2</span>
+            </div>
+            <span class="badge badge-new" id="demoBadge">Новая</span>
+          </div>
+          <div class="demo-progress"><div class="demo-progress-bar" id="demoProgress"></div></div>
+          <div class="demo-steps" role="group" aria-label="Демонстрация статусов заявки">
+            <button type="button" data-status="new" aria-pressed="true">Новая</button>
+            <button type="button" data-status="progress" aria-pressed="false">В работе</button>
+            <button type="button" data-status="closed" aria-pressed="false">Закрыта</button>
+          </div>
+          <p class="demo-note" id="demoNote" aria-live="polite">Заявка зарегистрирована и ждёт, пока инженер возьмёт её в работу.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="logo" href="index.html">
+        <span class="logo-mark" aria-hidden="true"></span>
+        Obsluga
+      </a>
+      <p class="footer-note" style="margin-top:10px; max-width:32ch;">Сервис регистрации заявок на устранение неисправностей оборудования.</p>
+    </div>
+    <nav aria-label="Ссылки в подвале">
+      <ul>
+        <li><a href="index.html#process">Как это работает</a></li>
+        <li><a href="login.html">Вход и регистрация</a></li>
+        <li><a href="admin.html">Панель инженера</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container">
+    <p class="footer-note" style="margin-top:24px;">© 2026 Obsluga. Учебный проект лабораторной работы.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
