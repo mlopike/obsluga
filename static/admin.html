@@ -118,6 +118,12 @@
         </select>
       </div>
       <div class="field">
+        <label for="create-department">Цех / отдел</label>
+        <input class="input" type="text" id="create-department" name="department" required
+               autocomplete="off" placeholder="Например, Цех №2">
+        <!-- TODO(backend): поле заполняется автоматически из профиля пользователя (цех указан при регистрации) -->
+      </div>
+      <div class="field">
         <label for="create-description">Описание неисправности</label>
         <textarea class="input" id="create-description" name="description" required
                   placeholder="Что произошло, когда и при каких обстоятельствах"></textarea>

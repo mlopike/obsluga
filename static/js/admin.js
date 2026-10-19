@@ -12,7 +12,7 @@
  *   PATCH  /api/tickets/:id             -> Ticket                (detailForm submit)
  *
  * Ticket shape used throughout this file:
- *   { id, equipment, description, reporter, engineer, status, updated, diagnosis, workDone }
+ *   { id, department, equipment, description, reporter, engineer, status, updated, diagnosis, workDone }
  *   status is one of: "new" | "progress" | "closed"
  * ---------------------------------------------------------------------
  */
@@ -21,14 +21,14 @@
 
   // TODO(backend): replace with data fetched from GET /api/tickets
   var MOCK_TICKETS = [
-    { id: 1248, equipment: "Компрессор ВК-25", description: "Падает давление на выходе, слышен посторонний стук.", reporter: "Олег Петров", engineer: "Мария Кузнецова", status: "progress", updated: "24 сен, 14:10", diagnosis: "Износ клапанной группы.", workDone: "Заменена клапанная плита, проверено давление." },
-    { id: 1247, equipment: "Токарный станок 16К20", description: "Не включается шпиндель, срабатывает автомат защиты.", reporter: "Ирина Волкова", engineer: "—", status: "new", updated: "26 сен, 09:02", diagnosis: "", workDone: "" },
-    { id: 1246, equipment: "Конвейерная лента №3", description: "Лента съезжает в сторону на участке загрузки.", reporter: "Сергей Титов", engineer: "Андрей Носов", status: "closed", updated: "22 сен, 17:40", diagnosis: "Разбалансировка натяжного ролика.", workDone: "Отрегулировано натяжение, лента выровнена." },
-    { id: 1245, equipment: "Сварочный аппарат ТДМ-317", description: "Нестабильная дуга, перегрев кабеля.", reporter: "Дмитрий Орлов", engineer: "Мария Кузнецова", status: "progress", updated: "25 сен, 11:20", diagnosis: "Повреждена изоляция силового кабеля.", workDone: "Кабель заменён, тест под нагрузкой в процессе." },
-    { id: 1244, equipment: "Насос ЦНС 60-99", description: "Протечка по сальниковому уплотнению.", reporter: "Наталья Быкова", engineer: "—", status: "new", updated: "26 сен, 08:15", diagnosis: "", workDone: "" },
-    { id: 1243, equipment: "Пресс гидравлический ПГ-100", description: "Медленный подъём плиты, падает рабочее давление.", reporter: "Игорь Соколов", engineer: "Андрей Носов", status: "closed", updated: "20 сен, 16:05", diagnosis: "Загрязнение гидравлического фильтра.", workDone: "Заменён фильтр и рабочая жидкость." },
-    { id: 1242, equipment: "Электропогрузчик EP-16", description: "Не держит заряд аккумулятор, разряжается за смену.", reporter: "Павел Гришин", engineer: "Мария Кузнецова", status: "new", updated: "26 сен, 10:40", diagnosis: "", workDone: "" },
-    { id: 1241, equipment: "Компрессор ВК-25", description: "Автоматическое отключение при достижении половины давления.", reporter: "Олег Петров", engineer: "Андрей Носов", status: "closed", updated: "18 сен, 13:00", diagnosis: "Неисправность реле давления.", workDone: "Реле давления заменено, проведён тестовый цикл." }
+    { id: 1248, department: "Цех №2", equipment: "Компрессор ВК-25", description: "Падает давление на выходе, слышен посторонний стук.", reporter: "Олег Петров", engineer: "Мария Кузнецова", status: "progress", updated: "24 сен, 14:10", diagnosis: "Износ клапанной группы.", workDone: "Заменена клапанная плита, проверено давление." },
+    { id: 1247, department: "Цех №1", equipment: "Токарный станок 16К20", description: "Не включается шпиндель, срабатывает автомат защиты.", reporter: "Ирина Волкова", engineer: "—", status: "new", updated: "26 сен, 09:02", diagnosis: "", workDone: "" },
+    { id: 1246, department: "Цех №3", equipment: "Конвейерная лента №3", description: "Лента съезжает в сторону на участке загрузки.", reporter: "Сергей Титов", engineer: "Андрей Носов", status: "closed", updated: "22 сен, 17:40", diagnosis: "Разбалансировка натяжного ролика.", workDone: "Отрегулировано натяжение, лента выровнена." },
+    { id: 1245, department: "Цех №2", equipment: "Сварочный аппарат ТДМ-317", description: "Нестабильная дуга, перегрев кабеля.", reporter: "Дмитрий Орлов", engineer: "Мария Кузнецова", status: "progress", updated: "25 сен, 11:20", diagnosis: "Повреждена изоляция силового кабеля.", workDone: "Кабель заменён, тест под нагрузкой в процессе." },
+    { id: 1244, department: "Цех №4", equipment: "Насос ЦНС 60-99", description: "Протечка по сальниковому уплотнению.", reporter: "Наталья Быкова", engineer: "—", status: "new", updated: "26 сен, 08:15", diagnosis: "", workDone: "" },
+    { id: 1243, department: "Цех №1", equipment: "Пресс гидравлический ПГ-100", description: "Медленный подъём плиты, падает рабочее давление.", reporter: "Игорь Соколов", engineer: "Андрей Носов", status: "closed", updated: "20 сен, 16:05", diagnosis: "Загрязнение гидравлического фильтра.", workDone: "Заменён фильтр и рабочая жидкость." },
+    { id: 1242, department: "Цех №3", equipment: "Электропогрузчик EP-16", description: "Не держит заряд аккумулятор, разряжается за смену.", reporter: "Павел Гришин", engineer: "Мария Кузнецова", status: "new", updated: "26 сен, 10:40", diagnosis: "", workDone: "" },
+    { id: 1241, department: "Цех №2", equipment: "Компрессор ВК-25", description: "Автоматическое отключение при достижении половины давления.", reporter: "Олег Петров", engineer: "Андрей Носов", status: "closed", updated: "18 сен, 13:00", diagnosis: "Неисправность реле давления.", workDone: "Реле давления заменено, проведён тестовый цикл." }
   ];
 
   var STATUS_LABEL = { new: "Новая", progress: "В работе", closed: "Закрыта" };
@@ -131,6 +131,8 @@
       var nextId = Math.max.apply(null, MOCK_TICKETS.map(function (t) { return t.id; })) + 1;
       MOCK_TICKETS.unshift({
         id: nextId,
+        // TODO(backend): цех берётся из профиля пользователя (указывается при регистрации), а не из формы
+        department: form.elements.department.value,
         equipment: form.elements.equipment.value,
         description: form.elements.description.value,
         reporter: form.elements.reporter.value,
@@ -154,6 +156,7 @@
 
     document.getElementById("detailDialogTitle").textContent = "Заявка №" + ticket.id;
     document.getElementById("detailMeta").innerHTML =
+      '<span><strong>Цех:</strong> ' + escapeHtml(ticket.department) + '</span>' +
       '<span><strong>Оборудование:</strong> ' + escapeHtml(ticket.equipment) + '</span>' +
       '<span><strong>Подал заявку:</strong> ' + escapeHtml(ticket.reporter) + '</span>' +
       '<span><strong>Неисправность:</strong> ' + escapeHtml(ticket.description) + '</span>';
