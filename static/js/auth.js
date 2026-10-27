@@ -1,21 +1,11 @@
 /**
  * Obsluga — auth page interactions.
  *
- * BACKEND INTEGRATION POINTS
- * ---------------------------------------------------------------------
- * Both forms currently only validate on the client and show a mock
- * confirmation message. Replace the two `// TODO(backend)` blocks below
- * with real fetch() calls once the API exists, e.g.:
- *
- *   const res = await fetch('/api/auth/login', {
- *     method: 'POST',
- *     headers: { 'Content-Type': 'application/json' },
- *     body: JSON.stringify({ email, password })
- *   });
- *
- * On success, redirect to admin.html (engineer) or a future employee
- * dashboard; on failure, show the returned error in #formMessage.
- * ---------------------------------------------------------------------
+ * Login:  POST /api/auth/login    { email, password, remember }
+ * Register: POST /api/auth/register { full_name, email, department, role, password }
+ * On success the token and profile are stored (localStorage for "remember",
+ * sessionStorage otherwise) and the page redirects to admin.html.
+ * On failure the API error detail is shown in #formMessage.
  */
 (function () {
   "use strict";
@@ -80,16 +70,58 @@
     box.textContent = "";
   }
 
+  function storeSession(token, profile, remember) {
+    var storage = remember ? window.localStorage : window.sessionStorage;
+    storage.setItem("token", token);
+    storage.setItem("profile", JSON.stringify(profile));
+  }
+
+  function extractDetail(data) {
+    if (!data || !data.detail) return null;
+    if (typeof data.detail === "string") return data.detail;
+    if (Array.isArray(data.detail)) {
+      return data.detail.map(function (item) { return item.msg; }).join("; ");
+    }
+    return String(data.detail);
+  }
+
+  function showError(response) {
+    response.json().then(function (data) {
+      showMessage(extractDetail(data) || "Не удалось выполнить запрос. Попробуйте позже.");
+    }).catch(function () {
+      showMessage("Не удалось выполнить запрос. Попробуйте позже.");
+    });
+  }
+
   function initLoginForm() {
     var form = document.getElementById("loginForm");
     if (!form) return;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (!form.reportValidity()) return;
+      hideMessage();
 
-      // TODO(backend): send { email, password, remember } to POST /api/auth/login
-      var email = form.elements.email.value;
-      showMessage("Демонстрационный режим: данные для входа (" + email + ") пока не отправляются на сервер — бэкенд ещё не подключён.");
+      var body = {
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+        remember: form.elements.remember.checked
+      };
+
+      fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }).then(function (res) {
+        if (res.ok) {
+          return res.json().then(function (data) {
+            storeSession(data.token, data.profile, body.remember);
+            window.location.assign("admin.html");
+          });
+        }
+        showError(res);
+      }).catch(function () {
+        showMessage("Сервер недоступен. Попробуйте позже.");
+      });
     });
   }
 
@@ -107,9 +139,32 @@
         form.elements.passwordConfirm.focus();
         return;
       }
+      hideMessage();
 
-      // TODO(backend): send { fullName, email, department, role, password } to POST /api/auth/register
-      showMessage("Демонстрационный режим: аккаунт пока не создаётся — бэкенд ещё не подключён.");
+      var body = {
+        full_name: form.elements.fullName.value,
+        email: form.elements.email.value,
+        department: form.elements.department.value,
+        role: form.elements.role.value,
+        password: password
+      };
+
+      fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }).then(function (res) {
+        if (res.ok) {
+          return res.json().then(function (data) {
+            // Токен регистрации короткий (remember=False) — сессионное хранилище
+            storeSession(data.token, data.profile, false);
+            window.location.assign("admin.html");
+          });
+        }
+        showError(res);
+      }).catch(function () {
+        showMessage("Сервер недоступен. Попробуйте позже.");
+      });
     });
   }
 

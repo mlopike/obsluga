@@ -74,7 +74,7 @@
 
     <div class="ticket-table-wrap">
       <table class="ticket-table">
-        <caption>Очередь заявок на ремонт оборудования. Данные ниже — тестовый набор; после подключения бэкенда таблица будет заполняться из GET /api/tickets (см. js/admin.js).</caption>
+        <caption>Очередь заявок на ремонт оборудования.</caption>
         <thead>
           <tr>
             <th scope="col">№</th>
@@ -87,7 +87,7 @@
           </tr>
         </thead>
         <tbody id="ticketTableBody">
-          <!-- rows are rendered by js/admin.js from MOCK_TICKETS -->
+          <!-- rows are rendered by js/admin.js from GET /api/tickets -->
         </tbody>
       </table>
     </div>
@@ -100,38 +100,20 @@
     <h2 id="createDialogTitle">Новая заявка</h2>
     <button type="button" class="dialog-close" data-close-dialog="createDialog" aria-label="Закрыть окно">✕</button>
   </div>
-  <!-- TODO(backend): POST /api/tickets { equipmentId, description, reportedBy } -->
+  <!-- POST /api/tickets { equipment_id, description } — reporter и цех берёт бэкенд из профиля -->
   <form id="createTicketForm">
     <div class="dialog-body">
       <div class="field">
         <label for="create-equipment">Оборудование</label>
         <select class="input" id="create-equipment" name="equipment" required>
           <option value="" disabled selected>Выберите оборудование из каталога</option>
-          <!-- TODO(backend): options should come from GET /api/equipment -->
-          <option>Токарный станок 16К20</option>
-          <option>Компрессор ВК-25</option>
-          <option>Конвейерная лента №3</option>
-          <option>Сварочный аппарат ТДМ-317</option>
-          <option>Насос ЦНС 60-99</option>
-          <option>Пресс гидравлический ПГ-100</option>
-          <option>Электропогрузчик EP-16</option>
+          <!-- options заполняются из GET /api/equipment (см. js/admin.js) -->
         </select>
-      </div>
-      <div class="field">
-        <label for="create-department">Цех / отдел</label>
-        <input class="input" type="text" id="create-department" name="department" required
-               autocomplete="off" placeholder="Например, Цех №2">
-        <!-- TODO(backend): поле заполняется автоматически из профиля пользователя (цех указан при регистрации) -->
       </div>
       <div class="field">
         <label for="create-description">Описание неисправности</label>
         <textarea class="input" id="create-description" name="description" required
                   placeholder="Что произошло, когда и при каких обстоятельствах"></textarea>
-      </div>
-      <div class="field">
-        <label for="create-reporter">Сотрудник, подавший заявку</label>
-        <input class="input" type="text" id="create-reporter" name="reporter" required
-               autocomplete="name" placeholder="ФИО сотрудника">
       </div>
     </div>
     <div class="dialog-foot">
@@ -147,7 +129,7 @@
     <h2 id="detailDialogTitle">Заявка</h2>
     <button type="button" class="dialog-close" data-close-dialog="detailDialog" aria-label="Закрыть окно">✕</button>
   </div>
-  <!-- TODO(backend): PATCH /api/tickets/:id { status, diagnosis, workDone } -->
+  <!-- PATCH /api/tickets/:id { status, diagnosis, workDone } -->
   <form id="detailForm">
     <div class="dialog-body">
       <div class="ticket-meta" id="detailMeta"></div>
