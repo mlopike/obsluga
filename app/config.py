@@ -1,7 +1,6 @@
 import os
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from sqlalchemy.engine.url import URL
 
 
 class Settings(BaseSettings):
@@ -9,19 +8,7 @@ class Settings(BaseSettings):
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"),
         env_file_encoding="utf-8",
     )
-    db_user: str
-    db_password: str
-    db_name: str
-    db_host: str
-    db_port: int
-
-    @property
-    def db_url(self) -> URL:
-        return URL.create(
-            drivername="postgresql+asyncpg",
-            username=self.db_user,
-            password=self.db_password,
-            host=self.db_host,
-            port=self.db_port,
-            database=self.db_name,
-        )
+    database_url: str
+    jwt_secret: str
+    token_hours: int = 12
+    token_hours_remember: int = 720

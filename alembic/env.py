@@ -26,7 +26,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # URL подключения — из app.config (.env)
-config.set_main_option("sqlalchemy.url", str(Settings().db_url))
+config.set_main_option("sqlalchemy.url", Settings().database_url)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
