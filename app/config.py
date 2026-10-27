@@ -1,9 +1,14 @@
+import os
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.engine.url import URL
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(
+        env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"),
+        env_file_encoding="utf-8",
+    )
     db_user: str
     db_password: str
     db_name: str
@@ -20,4 +25,3 @@ class Settings(BaseSettings):
             port=self.db_port,
             database=self.db_name,
         )
-

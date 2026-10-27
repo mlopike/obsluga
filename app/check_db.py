@@ -1,7 +1,9 @@
 import asyncio
+
 import sqlalchemy as sa
-from database import engine
-from config import Settings
+
+from app.config import Settings
+from app.database import engine
 
 settings = Settings()
 
