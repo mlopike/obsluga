@@ -2,12 +2,13 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class RegisterIn(BaseModel):
+    """Регистрация всегда создаёт сотрудника. Роль инженера назначает администратор."""
+
     model_config = ConfigDict(populate_by_name=True)
 
-    full_name: str
-    email: str
+    full_name: str = Field(min_length=1, max_length=255)
+    email: str = Field(min_length=3, max_length=255)
     department: str
-    role: str
     password: str = Field(min_length=8)
 
     @field_validator("password")
@@ -32,6 +33,7 @@ class ProfileOut(BaseModel):
     id: int
     full_name: str
     role: str
+    perm: int
     department: str
 
 
@@ -40,3 +42,25 @@ class TokenOut(BaseModel):
 
     token: str
     profile: ProfileOut
+
+
+class DepartmentOut(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: int
+    name: str
+
+
+class UserOut(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: int
+    full_name: str
+    email: str
+    role: str
+    perm: int
+    department: str
+
+
+class UserRolePatch(BaseModel):
+    role: str

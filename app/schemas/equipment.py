@@ -6,3 +6,4 @@ class EquipmentOut(BaseModel):
 
     id: int
     name: str
+    department: str

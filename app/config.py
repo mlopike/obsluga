@@ -12,3 +12,7 @@ class Settings(BaseSettings):
     jwt_secret: str
     token_hours: int = 12
     token_hours_remember: int = 720
+    # Первый администратор создаётся сидом, только если заданы оба значения
+    admin_email: str | None = None
+    admin_password: str | None = None
+    admin_full_name: str = "Администратор"

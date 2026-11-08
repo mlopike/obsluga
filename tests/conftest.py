@@ -22,9 +22,12 @@ async def client():
 
     role_employee = Role(name="Сотрудник", perm_level=1)
     role_engineer = Role(name="Инженер", perm_level=2)
+    role_admin = Role(name="Администратор", perm_level=3)
     department = Department(name="Цех №2")
+    department_admin = Department(name="Администрация")
+    department_other = Department(name="Цех №4")
     compressor = Equipment(name="Компрессор ВК-25", department=department)
-    pump = Equipment(name="Насос ЦНС 60-99", department=department)
+    pump = Equipment(name="Насос ЦНС 60-99", department=department_other)
     employee = Account(
         full_name="Иванов Иван",
         email="ivanov@test.ru",
@@ -39,8 +42,36 @@ async def client():
         role=role_engineer,
         department=department,
     )
+    employee2 = Account(
+        full_name="Сидоров Сидор",
+        email="sidorov@test.ru",
+        password_hash=hash_password("secret123"),
+        role=role_employee,
+        department=department_other,
+    )
+    engineer2 = Account(
+        full_name="Орлов Андрей",
+        email="orlov@test.ru",
+        password_hash=hash_password("secret123"),
+        role=role_engineer,
+        department=department,
+    )
+    admin = Account(
+        full_name="Главный Админ",
+        email="admin@test.ru",
+        password_hash=hash_password("secret123"),
+        role=role_admin,
+        department=department_admin,
+    )
     async with async_session() as session:
-        session.add_all([role_employee, role_engineer, department, compressor, pump, employee, engineer])
+        session.add_all(
+            [
+                role_employee, role_engineer, role_admin,
+                department, department_admin, department_other,
+                compressor, pump,
+                employee, employee2, engineer, engineer2, admin,
+            ]
+        )
         await session.commit()
 
     transport = httpx.ASGITransport(app=app)

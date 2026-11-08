@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Вход и регистрация — Obsluga</title>
 <meta name="description" content="Вход в Obsluga или регистрация нового сотрудника для подачи заявок на ремонт оборудования.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2032%2032%27%3E%3Crect%20width=%2732%27%20height=%2732%27%20rx=%278%27%20fill=%27%23B15E37%27/%3E%3Ccircle%20cx=%2716%27%20cy=%2716%27%20r=%276%27%20fill=%27%238FC4CE%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,7 +25,7 @@
     <div class="blob blob-b" style="width:50%; height:50%; bottom:-8%; right:-10%;"></div>
     <div class="auth-visual-copy">
       <h2 style="color:#fff;">Заявки на ремонт — в одном окне</h2>
-      <p>Войдите, чтобы создать заявку на устранение неисправности или открыть панель инженера и взять заявку в работу.</p>
+      <p>Войдите, чтобы создать заявку на устранение неисправности или следить за её ходом. Инженеры и администраторы входят с теми же данными.</p>
     </div>
   </section>
 
@@ -42,7 +43,7 @@
         <h1 style="font-size:1.5rem;">С возвращением</h1>
         <p style="color:var(--text-muted); margin-bottom:22px;">Войдите, чтобы создать заявку или продолжить работу с открытыми.</p>
 
-        <!-- TODO(backend): POST /api/auth/login { email, password } — заменить submit-обработчик на реальный вызов API -->
+        <!-- POST /api/auth/login { email, password, remember } — см. js/auth.js -->
         <form id="loginForm" novalidate>
           <div class="field">
             <label for="login-email">Рабочий email</label>
@@ -60,24 +61,23 @@
               </button>
             </div>
           </div>
-          <div class="field" style="display:flex; align-items:center; justify-content:space-between;">
+          <div class="field">
             <div class="checkbox-field">
               <input type="checkbox" id="login-remember" name="remember">
               <label for="login-remember">Запомнить меня</label>
             </div>
-            <a href="#" style="font-size:.85rem;">Забыли пароль?</a>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Войти</button>
         </form>
-        <p class="auth-foot-link">Ещё нет аккаунта? <a href="#" data-switch-to="register">Создать заявку впервые</a></p>
+        <p class="auth-foot-link">Ещё нет аккаунта? <a href="#" data-switch-to="register">Зарегистрироваться</a></p>
       </section>
 
       <!-- ============ REGISTER ============ -->
       <section role="tabpanel" id="panel-register" aria-labelledby="tab-register" hidden>
         <h1 style="font-size:1.5rem;">Регистрация сотрудника</h1>
-        <p style="color:var(--text-muted); margin-bottom:22px;">Понадобится рабочая почта и подразделение — это поможет быстрее находить нужное оборудование.</p>
+        <p style="color:var(--text-muted); margin-bottom:22px;">Укажите рабочую почту и свой цех. Права инженера выдаёт администратор.</p>
 
-        <!-- TODO(backend): POST /api/auth/register { fullName, email, department, role, password } -->
+        <!-- GET /api/auth/departments → список цехов; POST /api/auth/register { full_name, email, department, password } -->
         <form id="registerForm" novalidate>
           <div class="field">
             <label for="reg-name">ФИО</label>
@@ -89,20 +89,11 @@
             <input class="input" type="email" id="reg-email" name="email"
                    autocomplete="email" required placeholder="name@company.ru">
           </div>
-          <div class="form-row">
-            <div class="field">
-              <label for="reg-department">Цех / отдел</label>
-              <input class="input" type="text" id="reg-department" name="department"
-                     autocomplete="off" required placeholder="Цех №2">
-            </div>
-            <div class="field">
-              <label for="reg-role">Роль</label>
-              <select class="input" id="reg-role" name="role" required>
-                <option value="" disabled selected>Выберите роль</option>
-                <option value="Сотрудник">Сотрудник</option>
-                <option value="Инженер">Инженер</option>
-              </select>
-            </div>
+          <div class="field">
+            <label for="reg-department">Цех / отдел</label>
+            <select class="input" id="reg-department" name="department" required>
+              <option value="" disabled selected>Выберите цех</option>
+            </select>
           </div>
           <div class="field">
             <label for="reg-password">Пароль</label>

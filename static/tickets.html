@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Заявки · Obsluga</title>
+<meta name="description" content="Obsluga: заявки на ремонт оборудования. Сотрудник подаёт и отслеживает заявки, инженер берёт их в работу и фиксирует результат.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%2032%2032%27%3E%3Crect%20width=%2732%27%20height=%2732%27%20rx=%278%27%20fill=%27%23B15E37%27/%3E%3Ccircle%20cx=%2716%27%20cy=%2716%27%20r=%276%27%20fill=%27%238FC4CE%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к основному содержимому</a>
+
+<header class="app-header">
+  <a class="logo" href="index.html">
+    <span class="logo-mark" aria-hidden="true"></span>
+    Obsluga
+  </a>
+  <div class="app-user">
+    <div class="app-user-meta">
+      <strong data-user-name></strong>
+      <span data-user-dept></span>
+    </div>
+    <span data-user-role></span>
+    <a class="btn btn-ghost btn-sm" href="login.html" data-logout>Выйти</a>
+  </div>
+</header>
+
+<main id="main" class="app-main">
+  <div class="admin-topbar">
+    <div>
+      <h1 id="pageTitle">Заявки</h1>
+      <p class="page-lede" id="pageLede"></p>
+    </div>
+    <button type="button" class="btn btn-primary" id="openCreateDialog" hidden>+ Новая заявка</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="filter-tabs" id="filterTabs" role="group" aria-label="Фильтр заявок"></div>
+    <div class="admin-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label for="ticketSearch" class="visually-hidden">Поиск по заявкам</label>
+      <input class="input" type="search" id="ticketSearch" placeholder="Оборудование или номер">
+    </div>
+  </div>
+
+  <div class="ticket-table-wrap">
+    <table class="ticket-table">
+      <caption id="tableCaption">Заявки на ремонт оборудования.</caption>
+      <thead>
+        <tr>
+          <th scope="col">№</th>
+          <th scope="col">Оборудование</th>
+          <th scope="col">Неисправность</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Инженер</th>
+          <th scope="col">Обновлено</th>
+          <th scope="col"><span class="visually-hidden">Действия</span></th>
+        </tr>
+      </thead>
+      <tbody id="ticketTableBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Новая заявка: только сотрудник. POST /api/tickets { equipment_id, description } -->
+<dialog id="createDialog" aria-labelledby="createDialogTitle">
+  <div class="dialog-head">
+    <h2 id="createDialogTitle">Новая заявка</h2>
+    <button type="button" class="dialog-close" data-close-dialog="createDialog" aria-label="Закрыть окно">✕</button>
+  </div>
+  <form id="createTicketForm">
+    <div class="dialog-body">
+      <div class="field">
+        <label for="create-equipment">Оборудование</label>
+        <select class="input" id="create-equipment" name="equipment" required>
+          <option value="" disabled selected>Выберите оборудование из каталога</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="create-description">Описание неисправности</label>
+        <textarea class="input" id="create-description" name="description" required maxlength="2048"
+                  placeholder="Что произошло, когда и при каких обстоятельствах"></textarea>
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button type="button" class="btn btn-ghost" data-close-dialog="createDialog">Отмена</button>
+      <button type="submit" class="btn btn-primary">Создать заявку</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Карточка заявки. Инженер: POST /api/tickets/:id/take, PATCH /api/tickets/:id -->
+<dialog id="detailDialog" aria-labelledby="detailDialogTitle">
+  <div class="dialog-head">
+    <h2 id="detailDialogTitle">Заявка</h2>
+    <button type="button" class="dialog-close" data-close-dialog="detailDialog" aria-label="Закрыть окно">✕</button>
+  </div>
+  <form id="detailForm">
+    <div class="dialog-body">
+      <dl class="ticket-facts" id="detailMeta"></dl>
+      <div class="field">
+        <label for="detail-diagnosis">Диагноз</label>
+        <textarea class="input" id="detail-diagnosis" name="diagnosis" maxlength="2048"
+                  placeholder="Причина неисправности, найденная инженером"></textarea>
+      </div>
+      <div class="field">
+        <label for="detail-work">Выполненные работы</label>
+        <textarea class="input" id="detail-work" name="workDone" maxlength="2048"
+                  placeholder="Что было сделано для устранения неисправности"></textarea>
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button type="button" class="btn btn-ghost" data-close-dialog="detailDialog">Закрыть окно</button>
+      <button type="button" class="btn btn-primary" id="takeBtn" hidden>Взять в работу</button>
+      <button type="submit" class="btn btn-ghost" id="saveBtn" hidden>Сохранить</button>
+      <button type="button" class="btn btn-primary" id="closeTicketBtn" hidden>Закрыть заявку</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/common.js"></script>
+<script src="js/tickets.js"></script>
+</body>
+</html>

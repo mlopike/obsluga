@@ -50,11 +50,11 @@ async def get_current_account(
 CurrentAccount = Annotated[Account, Depends(get_current_account)]
 
 
-def require_perm(level: int):
-    """Фабрика зависимости прав: 403 при perm_level < level."""
+def require_roles(*levels: int):
+    """Фабрика зависимости прав: 403, если уровень роли не входит в список."""
 
     async def check_permission(account: CurrentAccount) -> Account:
-        if account.role.perm_level < level:
+        if account.role.perm_level not in levels:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Недостаточно прав",

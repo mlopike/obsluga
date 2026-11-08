@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700">
+<defs><marker id="arrowhead" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="#475569"/></marker></defs>
+<rect x="0" y="0" width="1000" height="700" fill="#f8fafc"/>
+<text x="500" y="40" font-size="22" font-weight="700" fill="#0f172a" text-anchor="middle" font-family="Segoe UI, Arial">Obsluga — схема базы данных (PostgreSQL)</text>
+<rect x="60" y="70" width="300" height="90" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M 60 92 q 0 8 8 8 h 284 q 8 0 8 -8 v -14 q 0 -8 -8 -8 h -284 q -8 0 -8 8 z" fill="#0f4c81"/>
+<text x="210.0" y="90" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Arial">department</text>
+<text x="74" y="121" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">department_id (PK, int)</text>
+<text x="74" y="145" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">name (unique, varchar(100))</text>
+<rect x="60" y="230" width="300" height="114" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M 60 252 q 0 8 8 8 h 284 q 8 0 8 -8 v -14 q 0 -8 -8 -8 h -284 q -8 0 -8 8 z" fill="#0f4c81"/>
+<text x="210.0" y="250" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Arial">role</text>
+<text x="74" y="281" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">role_id (PK, int)</text>
+<text x="74" y="305" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">name (unique, varchar(50))</text>
+<text x="74" y="329" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">perm_level (smallint)</text>
+<rect x="60" y="410" width="320" height="234" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M 60 432 q 0 8 8 8 h 304 q 8 0 8 -8 v -14 q 0 -8 -8 -8 h -304 q -8 0 -8 8 z" fill="#0f4c81"/>
+<text x="220.0" y="430" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Arial">account</text>
+<text x="74" y="461" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">account_id (PK, int)</text>
+<text x="74" y="485" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">role_id (FK)</text>
+<text x="74" y="509" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">department_id (FK)</text>
+<text x="74" y="533" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">full_name (varchar(255))</text>
+<text x="74" y="557" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">email (unique, varchar(255))</text>
+<text x="74" y="581" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">password_hash (varchar(255))</text>
+<text x="74" y="605" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">created_at (timestamptz)</text>
+<text x="74" y="629" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">updated_at (timestamptz, NULL)</text>
+<rect x="560" y="70" width="320" height="114" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M 560 92 q 0 8 8 8 h 304 q 8 0 8 -8 v -14 q 0 -8 -8 -8 h -304 q -8 0 -8 8 z" fill="#0f4c81"/>
+<text x="720.0" y="90" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Arial">equipment</text>
+<text x="574" y="121" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">equipment_id (PK, int)</text>
+<text x="574" y="145" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">department_id (FK)</text>
+<text x="574" y="169" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">name (varchar(255))</text>
+<rect x="560" y="270" width="360" height="282" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+<path d="M 560 292 q 0 8 8 8 h 344 q 8 0 8 -8 v -14 q 0 -8 -8 -8 h -344 q -8 0 -8 8 z" fill="#0f4c81"/>
+<text x="740.0" y="290" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Arial">request</text>
+<text x="574" y="321" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">request_id (PK, int)</text>
+<text x="574" y="345" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">equipment_id (FK)</text>
+<text x="574" y="369" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">reporter_id (FK)</text>
+<text x="574" y="393" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">engineer_id (FK, NULL, SET NULL)</text>
+<text x="574" y="417" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">malfunction (varchar(2048))</text>
+<text x="574" y="441" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">diagnosis (varchar(2048), NULL)</text>
+<text x="574" y="465" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">work_done (varchar(2048), NULL)</text>
+<text x="574" y="489" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">status (varchar(20))</text>
+<text x="574" y="513" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">created_at (timestamptz)</text>
+<text x="574" y="537" font-size="13.5" fill="#1e293b" font-family="Consolas, Arial">updated_at (timestamptz, NULL)</text>
+<polyline points="360,145 500,145 500,505 384,505" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+<text x="494" y="462" font-size="12.5" fill="#475569" text-anchor="end" font-family="Segoe UI, Arial">department_id</text>
+<polyline points="210,344 210,406" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+<text x="210" y="382" font-size="12.5" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">role_id</text>
+<polyline points="360,115 556,115" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+<text x="460" y="105" font-size="12.5" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">department_id</text>
+<polyline points="720,184 720,266" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+<text x="720" y="230" font-size="12.5" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">equipment_id</text>
+<polyline points="380,520 556,470" fill="none" stroke="#475569" stroke-width="1.8" marker-end="url(#arrowhead)"/>
+<text x="465" y="490" font-size="12.5" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">reporter_id</text>
+<polyline points="380,570 556,525" fill="none" stroke="#475569" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#arrowhead)"/>
+<text x="465" y="578" font-size="12.5" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">engineer_id</text>
+<text x="500" y="682" font-size="13" fill="#475569" text-anchor="middle" font-family="Segoe UI, Arial">Пунктирная стрелка — внешний ключ engineer_id с ON DELETE SET NULL (инженер назначается позже)</text>
+</svg>

@@ -3,11 +3,12 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 
 from app.core.deps import CurrentAccount, DbSession
+from app.core.roles import ADMIN_DEPARTMENT, ROLE_EMPLOYEE
 from app.core.security import create_token, hash_password, verify_password
 from app.models.account import Account
 from app.models.department import Department
 from app.models.role import Role
-from app.schemas.auth import LoginIn, ProfileOut, RegisterIn, TokenOut
+from app.schemas.auth import DepartmentOut, LoginIn, ProfileOut, RegisterIn, TokenOut
 
 router = APIRouter()
 
@@ -17,22 +18,25 @@ def _to_profile(account: Account) -> ProfileOut:
         id=account.account_id,
         full_name=account.full_name,
         role=account.role.name,
+        perm=account.role.perm_level,
         department=account.department.name,
     )
 
 
 @router.post("/register", response_model=TokenOut, status_code=status.HTTP_201_CREATED)
 async def register(data: RegisterIn, db: DbSession) -> TokenOut:
-    role = (await db.execute(select(Role).where(Role.name == data.role))).scalar_one_or_none()
+    role = (await db.execute(select(Role).where(Role.name == ROLE_EMPLOYEE))).scalar_one_or_none()
     if role is None:
-        roles = [r[0] for r in (await db.execute(select(Role.name).order_by(Role.name)))]
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Неизвестная роль «{data.role}». Допустимые значения: {', '.join(roles)}",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Справочник ролей не заполнен. Выполните python -m app.seed",
         )
     department = (await db.execute(select(Department).where(Department.name == data.department))).scalar_one_or_none()
-    if department is None:
-        departments = [d[0] for d in (await db.execute(select(Department.name).order_by(Department.name)))]
+    if department is None or department.name == ADMIN_DEPARTMENT:
+        departments = [
+            d[0]
+            for d in (await db.execute(select(Department.name).where(Department.name != ADMIN_DEPARTMENT).order_by(Department.name)))
+        ]
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Неизвестный цех «{data.department}». Допустимые значения: {', '.join(departments)}",
@@ -61,7 +65,16 @@ async def register(data: RegisterIn, db: DbSession) -> TokenOut:
         account.full_name,
         remember=False,
     )
-    return TokenOut(token=token, profile=_to_profile(account))
+    return TokenOut(
+        token=token,
+        profile=ProfileOut(
+            id=account.account_id,
+            full_name=account.full_name,
+            role=role.name,
+            perm=role.perm_level,
+            department=department.name,
+        ),
+    )
 
 
 @router.post("/login", response_model=TokenOut)
@@ -95,3 +108,14 @@ async def me(current: CurrentAccount, db: DbSession) -> ProfileOut:
         .options(joinedload(Account.role), joinedload(Account.department))
     )
     return _to_profile(result.scalar_one())
+
+
+@router.get("/departments", response_model=list[DepartmentOut])
+async def list_departments(db: DbSession) -> list[DepartmentOut]:
+    """Публичный справочник для формы регистрации (служебный цех администратора скрыт)."""
+    result = await db.execute(
+        select(Department.department_id, Department.name)
+        .where(Department.name != ADMIN_DEPARTMENT)
+        .order_by(Department.name)
+    )
+    return [DepartmentOut(id=department_id, name=name) for department_id, name in result.all()]

@@ -2,13 +2,35 @@
  * Obsluga — auth page interactions.
  *
  * Login:  POST /api/auth/login    { email, password, remember }
- * Register: POST /api/auth/register { full_name, email, department, role, password }
+ * Register: POST /api/auth/register { full_name, email, department, password }
+ * Departments: GET /api/auth/departments → <select id="reg-department">
  * On success the token and profile are stored (localStorage for "remember",
- * sessionStorage otherwise) and the page redirects to admin.html.
+ * sessionStorage otherwise) and the page redirects by role: administrator → admin.html, others → tickets.html.
  * On failure the API error detail is shown in #formMessage.
  */
 (function () {
   "use strict";
+
+  function homeFor(profile) {
+    return profile && profile.perm === 3 ? "admin.html" : "tickets.html";
+  }
+
+  function loadDepartments() {
+    var select = document.getElementById("reg-department");
+    if (!select) return;
+    fetch("/api/auth/departments").then(function (res) {
+      return res.json();
+    }).then(function (items) {
+      items.forEach(function (item) {
+        var option = document.createElement("option");
+        option.value = item.name;
+        option.textContent = item.name;
+        select.appendChild(option);
+      });
+    }).catch(function () {
+      showMessage("Не удалось загрузить список цехов. Обновите страницу.");
+    });
+  }
 
   function initTabs() {
     var tabs = document.querySelectorAll('[role="tab"]');
@@ -71,6 +93,12 @@
   }
 
   function storeSession(token, profile, remember) {
+    // Сначала стираем прежнюю сессию из обоих хранилищ, иначе старый токен
+    // (например, администратора из localStorage) перекроет новый.
+    ["token", "profile"].forEach(function (key) {
+      window.localStorage.removeItem(key);
+      window.sessionStorage.removeItem(key);
+    });
     var storage = remember ? window.localStorage : window.sessionStorage;
     storage.setItem("token", token);
     storage.setItem("profile", JSON.stringify(profile));
@@ -115,7 +143,7 @@
         if (res.ok) {
           return res.json().then(function (data) {
             storeSession(data.token, data.profile, body.remember);
-            window.location.assign("admin.html");
+            window.location.assign(homeFor(data.profile));
           });
         }
         showError(res);
@@ -145,7 +173,6 @@
         full_name: form.elements.fullName.value,
         email: form.elements.email.value,
         department: form.elements.department.value,
-        role: form.elements.role.value,
         password: password
       };
 
@@ -158,7 +185,7 @@
           return res.json().then(function (data) {
             // Токен регистрации короткий (remember=False) — сессионное хранилище
             storeSession(data.token, data.profile, false);
-            window.location.assign("admin.html");
+            window.location.assign(homeFor(data.profile));
           });
         }
         showError(res);
@@ -173,5 +200,6 @@
     initPasswordToggles();
     initLoginForm();
     initRegisterForm();
+    loadDepartments();
   });
 })();
